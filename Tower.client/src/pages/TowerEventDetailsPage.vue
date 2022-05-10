@@ -63,8 +63,8 @@ export default {
         watchEffect(async () => {
            
             try {
-                AppState.tickets = [];
-                AppState.towerEvent = null;
+                // AppState.tickets = [];
+                // AppState.towerEvent = null;
                 await towerEventsService.getTowerEventById(route.params.id);
                 await towerEventsService.getTicketsByTowerEventId(route.params.id);
                 await commentsService.getComments(route.params.id)

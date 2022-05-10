@@ -10,7 +10,7 @@ class CommentsService {
         console.log(AppState.comments)
     }
     async createComment(eventId){
-        const res = await api.post('api/comments/', eventId)
+        const res = await api.post('api/comments/' , eventId)
         logger.log('createCommentsError', res.data)
         AppState.comments.push(res.data)
     }

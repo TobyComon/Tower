@@ -4,6 +4,7 @@
     <div class="col-md-12">
      {{ticket.name}}
     </div>
+   <img :src="ticket.img" :alt="ticket.img">
 </div>
     </div>
 </template>
@@ -17,7 +18,7 @@ export default {
             required: true
         }
     },
-    setup(props){
+    setup(){
         return {
         
         }

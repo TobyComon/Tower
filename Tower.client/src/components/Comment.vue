@@ -1,11 +1,11 @@
 <template>
     <div class="container-fluid">
         <div class="row">
-            <img :src="comment.creator.picture" alt="">
-              <div class="col-md-12">
-                {{comment.creator.name}}
+            <img :src="comment.creator.picture" :alt="comment.creator.picture" class="col-md-2">
+              <div class="col-md-10">
+                {{comment.name}}
               </div>
-              <div class="col-md-12">
+              <div class="col-md-12 text-light">
                 {{comment.body}}
               </div>
             </div>
@@ -25,11 +25,11 @@ export default {
             required: true
         }
     },
-    setup(props){
+    setup(){
         const route = useRoute
 
         return {
-            comments: computed(() => AppState.comments)
+            // comments: computed(() => AppState.comments)
         }
     }
 }

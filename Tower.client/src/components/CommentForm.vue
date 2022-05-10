@@ -30,7 +30,7 @@ import { Modal } from 'bootstrap'
 export default {
     setup(){
         const route = useRoute()
-        const editable = ref({eventId: route.params.eventId})
+        const editable = ref({eventId: route.params.id})
         return {
             editable,
             async create() {
