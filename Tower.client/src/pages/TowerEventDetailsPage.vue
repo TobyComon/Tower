@@ -18,9 +18,7 @@
           <h4>{{ towerEvent.location }}</h4>
           <h5>{{ new Date(towerEvent.startDate).toDateString() }}</h5>
           <h5>{{ towerEvent.capacity }} Spots left</h5>
-          //TODO once hasTicket computed is working properly (return a bool
-          value) you just need to write a v-if to change button text or hide
-          button all together
+          
           <!-- TODO also need to check to c -->
           <button
             v-if="towerEvent.capacity > 0 && !hasTicket"
@@ -31,17 +29,20 @@
           </button>
         </div>
       </div>
-      <div>
-        <Ticket v-for="t in tickets" :key="t.id" :ticket="t" />
-      </div>
+    
+        <div class="row">
+
+          <Ticket v-for="t in tickets" :key="t.id" :ticket="t" />
+        </div>
+      
       <div>
         <Comment v-for="c in comments" :key="c.id" :comment="c" />
-        <!-- <i class="mdi mdi-trash-can-outline" v-if="comments.comment.creatorId == account.id"></i> -->
+        
       </div>
       <CommentForm />
     </div>
 
-    <div v-else class="text-center">
+    <div v-else class="justify-contents-center">
       <div class="loader">
         <div class="ball"></div>
         <div class="ball"></div>
@@ -68,14 +69,11 @@ import CommentForm from '../components/CommentForm.vue'
 import Ticket from '../components/Ticket.vue'
 export default {
   setup() {
-    const router = useRouter()
     const route = useRoute();
     const ticket = ref({});
     watchEffect(async () => {
 
       try {
-        // AppState.tickets = [];
-        // AppState.towerEvent = null;
         await towerEventsService.getTowerEventById(route.params.id);
         await towerEventsService.getTicketsByTowerEventId(route.params.id);
         await commentsService.getComments(route.params.id)
