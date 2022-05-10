@@ -20,7 +20,7 @@ class TowerEventsService {
     async removeTowerEvent(towerEventId, userId) {
         //REVIEW this entire function
         const towerEvent = await dbContext.TowerEvents.findById(towerEventId)
-        if (towerEvent.creatorId.toString() !=userId){
+        if (towerEvent.creatorId !=userId){
             throw new Forbidden("You cannot delete a Tower Event you did not create")
         }
         towerEvent.isCanceled = !towerEvent.isCanceled
@@ -35,10 +35,13 @@ class TowerEventsService {
         if(towerEvent.isCanceled){
             throw new BadRequest('Unable to edit cancelled events')
         }
+        if(towerEvent.creatorId.toString() !== userId){
+            throw new Forbidden('you cannot edit an event that is not yours')
+        }
         towerEvent.name = editedTowerEvent.name || towerEvent.name
         towerEvent.description = editedTowerEvent.description || towerEvent.description
         await towerEvent.save()
-        return editedTowerEvent
+        return towerEvent
     }
 }
 

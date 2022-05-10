@@ -14,6 +14,9 @@ class CommentsService {
         logger.log('createCommentsError', res.data)
         AppState.comments.push(res.data)
     }
+    async removeComment(commentId){
+        await api.delete(`api/comments/${commentId}`)
+    }
 }
 
 export const commentsService = new CommentsService()

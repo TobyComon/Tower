@@ -11,19 +11,20 @@ export class CommentsController extends BaseController{
         .delete('/:id', this.removeComment)
 
     }
-    removeComment(req, res, next) {
-        // FIXME do it
+    async removeComment(req, res, next) {
         try {
             
+            const deletedComment = await commentsService.removeComment(req.params.id, req.userInfo.id)
+            res.send(deletedComment)
         } catch (error) {
             next(error)
         }
     }
     async createComment(req, res, next) {
-        // REVIEW I do not understand what is needed in order to pass the eventId
+      
         try {
             req.body.creatorId = req.userInfo.id
-            // req.body.eventId = req.params.id
+            
             const comment = await commentsService.createComment(req.body)
             return res.send(comment)
         } catch (error) {

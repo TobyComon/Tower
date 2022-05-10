@@ -7,7 +7,7 @@
             <h1>{{ towerEvent.name }}</h1>
             <i
               v-if="towerEvent.creatorId == account.id"
-              class="mdi mdi-trash-can-outline"
+              class="mdi mdi-trash-can-outline selectable"
               @click="cancelTowerEvent"
             ></i>
             <p>{{ towerEvent.description }}</p>
@@ -18,9 +18,12 @@
           <h4>{{ towerEvent.location }}</h4>
           <h5>{{ new Date(towerEvent.startDate).toDateString() }}</h5>
           <h5>{{ towerEvent.capacity }} Spots left</h5>
-          //TODO once hasTicket computed is working properly (return a bool value) you just need to write a v-if to change button text or hide button all together
+          //TODO once hasTicket computed is working properly (return a bool
+          value) you just need to write a v-if to change button text or hide
+          button all together
+          <!-- TODO also need to check to c -->
           <button
-            v-if="towerEvent.capacity > 0"
+            v-if="towerEvent.capacity > 0 && !hasTicket"
             class="btn btn-success"
             @click="createTicket"
           >
@@ -33,6 +36,7 @@
       </div>
       <div>
         <Comment v-for="c in comments" :key="c.id" :comment="c" />
+        <!-- <i class="mdi mdi-trash-can-outline" v-if="comments.comment.creatorId == account.id"></i> -->
       </div>
       <CommentForm />
     </div>
@@ -87,6 +91,13 @@ export default {
       towerEvent: computed(() => AppState.towerEvent),
       // TODO need to create a computed here - call it "hasTicket" - iterate through the tickets, and see if the account Id on any ticket matches the logged in users account id
       //NFT from last week is great reference for this 
+      hasTicket: computed(() => {
+        let ticket = AppState.myTickets.find(t => t.eventId == route.params.id)
+        if (ticket) {
+          return true
+        }
+        return false
+      }),
       tickets: computed(() => AppState.tickets),
       comments: computed(() => AppState.comments),
       account: computed(() => AppState.account),

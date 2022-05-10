@@ -3,36 +3,37 @@ import { BadRequest, Forbidden } from "../utils/Errors.js";
 
 class TicketsService {
     async removeTicket(eventId, userId) {
-        const target = await dbContext.Tickets.findById(eventId)
-        if(!target){
+        const ticket = await dbContext.Tickets.findById(eventId)
+        if(!ticket){
             throw new BadRequest('Ticket not found')
         }
-        const towerEvent = await dbContext.TowerEvents.findById(target.eventId)
+        if(ticket.accountId.toString() !== userId){
+            throw new Forbidden('You cannot delete a ticket that is not yours')
+        }
+        const towerEvent = await dbContext.TowerEvents.findById(ticket.eventId)
         towerEvent.capacity ++
-        await target.remove()
+        await ticket.remove()
         await towerEvent.save()
     }
     async getTicketsByAccountId(accountId) {
-        return await dbContext.Tickets.find({accountId}).populate('event', ' name description')
+        return await dbContext.Tickets.find({accountId}).populate('event', ' name coverImg')
     }
     async getTicketsByTowerEventId(towerEventId) {
         return await dbContext.Tickets.find({eventId: towerEventId}).populate('account', 'name picture')
     }
 
-    async createTicket(newTicket, userId){
-        // REVIEW This was to prevent multiple tickets per user for an event. This should be handled on the front end instead.
-
-        // const exists = dbContext.Tickets.findOne({accountId: newTicket.accountId, towerEventId: newTicket.towerEventId}).populate('account', 'name picture')
-        // if(exists == newTicket){
-        //     throw new Forbidden
-        // }
-        const ticket = await dbContext.Tickets.create(newTicket)
-        await ticket.populate('account')
+    async createTicket(ticket){
+       
+        const newTicket = await dbContext.Tickets.create(ticket)
         const towerEvent = await dbContext.TowerEvents.findById(ticket.eventId)
+        await newTicket.populate('account')
+        if(towerEvent.capacity <= 0){
+            throw new BadRequest('No tickets left!')
+        }
         towerEvent.capacity --
-        //const capacity = await dbContext.TowerEvents.findById()
+       
         await towerEvent.save()
-        return ticket
+        return newTicket
 
     }
 }

@@ -18,7 +18,7 @@ class TowerEventsService{
         const res = await api.get(`api/events/${towerEventId}/tickets`)
         AppState.tickets = res.data
     }
-    async getTowerEventsByAccountId(accountId){
+    async getTowerEventsByAccountId(){
         const res = await api.get('account/tickets')
         AppState.myTickets = res.data
     }

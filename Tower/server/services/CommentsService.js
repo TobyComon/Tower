@@ -6,25 +6,24 @@ class CommentsService {
         const comments = await dbContext.Comments.find({eventId: towerEventId}).populate('creator', 'name picture')
         return comments
     }
-    async createComment(newComment) {
-        // REVIEW do I need "name picture" ? 
-        // const comment = await dbContext.Comments.create(body)
-        // return comment
-        const comment = await dbContext.Comments.create(newComment)
+    async createComment(body) {
+        
+        const comment = await dbContext.Comments.create(body)
         await comment.populate('creator')
         
         return comment
         
     }
     async removeComment(commentId, userId) {
-        const target = await dbContext.Comments.findById(commentId)
-        if (!target) {
+        const comment = await dbContext.Comments.findById(commentId)
+        if (!comment) {
             throw new BadRequest('Could not find that comment')
         }
-        if(target.creatorId.toString() !== userId.toString()) {
+        if(comment.creatorId.toString() !== userId) {
             throw new BadRequest('You cannot delete comments that you did not create')
         }
-        await target.remove()
+        await comment.remove()
+        return comment
     }
 
 }
