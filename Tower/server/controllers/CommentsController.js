@@ -8,10 +8,11 @@ export class CommentsController extends BaseController{
         this.router
         .use(Auth0Provider.getAuthorizedUserInfo)
         .post('', this.createComment)
-        .delete('', this.removeComment)
+        .delete('/:id', this.removeComment)
 
     }
     removeComment(req, res, next) {
+        // FIXME do it
         try {
             
         } catch (error) {

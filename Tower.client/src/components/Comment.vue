@@ -2,8 +2,8 @@
     <div class="container-fluid">
         <div class="row">
             <img :src="comment.creator.picture" :alt="comment.creator.picture" class="col-md-2">
-              <div class="col-md-10">
-                {{comment.name}}
+              <div class="col-md-10 text-light">
+                {{comment.creator.name}}
               </div>
               <div class="col-md-12 text-light">
                 {{comment.body}}

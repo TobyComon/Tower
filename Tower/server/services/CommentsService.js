@@ -9,9 +9,9 @@ class CommentsService {
     async createComment(newComment) {
         // REVIEW do I need "name picture" ? 
         // const comment = await dbContext.Comments.create(body)
-        // await comment.populate('creator')
         // return comment
         const comment = await dbContext.Comments.create(newComment)
+        await comment.populate('creator')
         
         return comment
         

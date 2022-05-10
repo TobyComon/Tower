@@ -1,44 +1,51 @@
 <template>
-    <div class="container-fluid">
-        <div v-if="towerEvent">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="bg-dark shadow rounded p-2">
-                        <h1>{{towerEvent.name}}</h1>
-                        <i v-if="towerEvent.creatorId == account.id" class="mdi mdi-trash-can-outline" @click="cancelTowerEvent"></i>
-                        <p>{{towerEvent.description}}</p>
-
-                      
-                    </div>
-                </div>
-                <div class="col-md-6 text-light">
-  <img :src="towerEvent.coverImg" :alt="towerEvent.coverImg">
-  <h4>{{towerEvent.location}}</h4>
-  <h5>{{new Date(towerEvent.startDate).toDateString()}}</h5>
-  <h5>{{towerEvent.capacity}} Spots left</h5>
-  <button v-if="towerEvent.capacity > 0" class="btn btn-success" @click="createTicket">Attend</button>
-                </div>
-            </div>
-            <div>
-              <Ticket v-for="t in tickets" :key="t.id" :ticket="t"/>
-              
-            </div>
-            <div>
-
-              <Comment v-for="c in comments" :key="c.id" :comment="c"/>
-            </div>
-            <CommentForm />
+  <div class="container-fluid">
+    <div v-if="towerEvent">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="bg-dark shadow rounded p-2">
+            <h1>{{ towerEvent.name }}</h1>
+            <i
+              v-if="towerEvent.creatorId == account.id"
+              class="mdi mdi-trash-can-outline"
+              @click="cancelTowerEvent"
+            ></i>
+            <p>{{ towerEvent.description }}</p>
+          </div>
         </div>
+        <div class="col-md-6 text-light">
+          <img :src="towerEvent.coverImg" :alt="towerEvent.coverImg" />
+          <h4>{{ towerEvent.location }}</h4>
+          <h5>{{ new Date(towerEvent.startDate).toDateString() }}</h5>
+          <h5>{{ towerEvent.capacity }} Spots left</h5>
+          //TODO once hasTicket computed is working properly (return a bool value) you just need to write a v-if to change button text or hide button all together
+          <button
+            v-if="towerEvent.capacity > 0"
+            class="btn btn-success"
+            @click="createTicket"
+          >
+            Attend
+          </button>
+        </div>
+      </div>
+      <div>
+        <Ticket v-for="t in tickets" :key="t.id" :ticket="t" />
+      </div>
+      <div>
+        <Comment v-for="c in comments" :key="c.id" :comment="c" />
+      </div>
+      <CommentForm />
+    </div>
 
     <div v-else class="text-center">
-        <div class="loader">
-    <div class="ball"></div>
-    <div class="ball"></div>
-    <div class="ball"></div>
-    <span class="text-light">Loading...</span>
+      <div class="loader">
+        <div class="ball"></div>
+        <div class="ball"></div>
+        <div class="ball"></div>
+        <span class="text-light">Loading...</span>
+      </div>
+    </div>
   </div>
-    </div>
-    </div>
 </template>
 
 
@@ -56,122 +63,122 @@ import { commentsService } from '../services/CommentsService.js'
 import CommentForm from '../components/CommentForm.vue'
 import Ticket from '../components/Ticket.vue'
 export default {
-    setup() {
-      const router = useRouter()
-        const route = useRoute();
-        const ticket = ref({});
-        watchEffect(async () => {
-           
-            try {
-                // AppState.tickets = [];
-                // AppState.towerEvent = null;
-                await towerEventsService.getTowerEventById(route.params.id);
-                await towerEventsService.getTicketsByTowerEventId(route.params.id);
-                await commentsService.getComments(route.params.id)
-            }
-            catch (error) {
-                logger.error(error);
-                Pop.toast(error.message, "error");
-            }
-        
-        })
-        return {
-            ticket,
-            towerEvent: computed(() => AppState.towerEvent),
-            tickets: computed(() => AppState.tickets),
-            comments: computed(() => AppState.comments),
-            account: computed(() => AppState.account),
-            async createTicket() {
-                try {
-                    // ticket.value.towerEventId = route.params.id;
-                    await ticketsService.createTicket({eventId: route.params.id});
-                    Pop.toast("Ticket Created!", "success");
-                }
-                catch (error) {
-                    logger.error(error);
-                    Pop.toast(error.message, "error");
-                }
-            },
-            async cancelTowerEvent() {
-                try {
-                    await towerEventsService.cancelTowerEvent(route.params.id);
-                }
-                catch (error) {
-                    logger.error(error);
-                    Pop.toast(error.message, "error");
-                }
-            }
-        };
-    },
-    components: { Comment, CommentForm, Ticket }
+  setup() {
+    const router = useRouter()
+    const route = useRoute();
+    const ticket = ref({});
+    watchEffect(async () => {
+
+      try {
+        // AppState.tickets = [];
+        // AppState.towerEvent = null;
+        await towerEventsService.getTowerEventById(route.params.id);
+        await towerEventsService.getTicketsByTowerEventId(route.params.id);
+        await commentsService.getComments(route.params.id)
+      }
+      catch (error) {
+        logger.error(error);
+        Pop.toast(error.message, "error");
+      }
+
+    })
+    return {
+      ticket,
+      towerEvent: computed(() => AppState.towerEvent),
+      // TODO need to create a computed here - call it "hasTicket" - iterate through the tickets, and see if the account Id on any ticket matches the logged in users account id
+      //NFT from last week is great reference for this 
+      tickets: computed(() => AppState.tickets),
+      comments: computed(() => AppState.comments),
+      account: computed(() => AppState.account),
+      async createTicket() {
+        try {
+          // ticket.value.towerEventId = route.params.id;
+          await ticketsService.createTicket({ eventId: route.params.id });
+          Pop.toast("Ticket Created!", "success");
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.toast(error.message, "error");
+        }
+      },
+      async cancelTowerEvent() {
+        try {
+          await towerEventsService.cancelTowerEvent(route.params.id);
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.toast(error.message, "error");
+        }
+      }
+    };
+  },
+  components: { Comment, CommentForm, Ticket }
 }
 </script>
 
 
 <style lang="scss" scoped>
-.loader{
+.loader {
   width: 120px;
   height: 75px;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
-
 }
-.loader span{
+.loader span {
   font-size: 22px;
   text-transform: uppercase;
   margin: auto;
 }
-.ball{
+.ball {
   width: 25px;
   height: 25px;
   border-radius: 50%;
   background-color: var(--bs-light);
-  animation: bounce .5s alternate infinite;
+  animation: bounce 0.5s alternate infinite;
 }
-.ball:nth-child(2){
-  animation-delay: .16s;
+.ball:nth-child(2) {
+  animation-delay: 0.16s;
 }
-.ball:nth-child(3){
-  animation-delay: .32s;
+.ball:nth-child(3) {
+  animation-delay: 0.32s;
 }
-@keyframes bounce{
+@keyframes bounce {
   from {
     transform: scaleX(1.25);
   }
-  to{
+  to {
     transform: translateY(-50px) scaleX(1);
   }
 }
-h1{
+h1 {
   animation-duration: 2s;
   animation-name: slidein;
 }
-@keyframes slidein{
+@keyframes slidein {
   from {
     margin-left: 100%;
     width: 300%;
   }
-  to{
+  to {
     margin-left: 0%;
     width: 100%;
   }
 }
-p{
+p {
   animation-duration: 3.5s;
   animation-name: slideup;
 }
 @keyframes slideup {
-  from{
+  from {
     color: rgba($color: #ecdbdb, $alpha: 0);
   }
- 
-  to{
-  color: rgba($color: #e9e9e9, $alpha: 1.0);
-    
+
+  to {
+    color: rgba($color: #e9e9e9, $alpha: 1);
+
     display: contents;
   }
-  
 }
 </style>

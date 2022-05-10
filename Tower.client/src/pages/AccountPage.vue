@@ -67,7 +67,8 @@ export default {
           Pop.toast(error.message, 'error')
         }
       },
-      account: computed(() => AppState.account)
+      account: computed(() => AppState.account),
+      myTickets: computed(() => AppState.myTickets)
     }
   }
 }
