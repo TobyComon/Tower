@@ -10,7 +10,7 @@ export class TicketsController extends BaseController {
         .use(Auth0Provider.getAuthorizedUserInfo)
         .post('', this.createTicket)
         .delete('/:id', this.removeTicket)
-        // .get('', this.getMyTickets)
+       
     }
    async removeTicket(req, res, next) {
         try {

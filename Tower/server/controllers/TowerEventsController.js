@@ -14,23 +14,12 @@ export class TowerEventsController extends BaseController {
         .get('/:id/comments', this.getCommentsByTowerEventId)
         .use(Auth0Provider.getAuthorizedUserInfo)
         .post('', this.createTowerEvent)
-        // .post('/:id/comments', this.createComment)
-        // .delete('/:id/comments/:id', this.removeComment)
+       
         .put('/:id', this.editTowerEvent )
         .delete('/:id', this.removeTowerEvent)
 
     }
-    // async createComment(req, res, next) {
-    //     // REVIEW I do not understand what is needed in order to pass the eventId
-    //     try {
-    //         req.body.creatorId = req.userInfo.id
-    //         req.body.towerEventId = req.params.id
-    //         const comment = await commentsService.createComment(req.body)
-    //         return res.send(comment)
-    //     } catch (error) {
-    //         next(error)
-    //     }
-    // }
+    
     
     async getAll(req, res, next) {
         try {

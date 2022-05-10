@@ -15,7 +15,7 @@
               <h2>
                 {{ towerEvent.name }}
               </h2>
-              <h3 class="text-danger"> Event has been cancelled :(</h3>
+              <h3 class="text-danger">Event has been cancelled :(</h3>
             </div>
           </div>
           <h2 v-else-if="towerEvent.capacity <= 0" class="text-danger">
@@ -58,8 +58,8 @@ export default {
   setup(props) {
     return {
       attending: computed(() => {
-        let attending = AppState.myTickets.find(a => a.id == props.towerEvent.id)
-        if (attending) {
+        let hasTicket = AppState.myTickets.find(t => t.id == props.towerEvent.id)
+        if (hasTicket) {
           return true
         }
         return false
@@ -82,15 +82,12 @@ export default {
 .event-card {
   max-height: fit-content;
   max-width: fit-content;
-  // overflow-y: auto;
 }
 .blur {
   display: grid;
   max-height: fit-content;
   backdrop-filter: blur(9px);
-  // box-sizing: border-box;
   position: absolute;
-  // top: 22.7em;
   top: auto;
   color: var(--bs-light);
 }

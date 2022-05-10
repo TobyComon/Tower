@@ -15,8 +15,7 @@ TicketSchema.virtual('account',
     foreignField: '_id',
     ref: 'Account',
     justOne: true
-    //REVIEW - Do I need a justOne here?? why?
-    //NOTE yes I do, I will almost ALWAYS want to use justOne
+
 })
 TicketSchema.virtual('event',{
 

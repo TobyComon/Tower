@@ -18,7 +18,7 @@ class TowerEventsService {
         return await dbContext.TowerEvents.create(body)
     }
     async removeTowerEvent(towerEventId, userId) {
-        //REVIEW this entire function
+       
         const towerEvent = await dbContext.TowerEvents.findById(towerEventId)
         if (towerEvent.creatorId !=userId){
             throw new Forbidden("You cannot delete a Tower Event you did not create")

@@ -17,32 +17,24 @@
       <span class="navbar-toggler-icon" />
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
-      
-      
-        <!-- <li>
-          <router-link
-            :to="{ name: 'About' }"
-            class="btn text-success lighten-30 selectable text-uppercase"
-          >
-            
-          </router-link>
-        </li> -->
-        <div class="d-flex">
-          <button
+      <div class="d-flex">
+        <button
           class="btn btn-success text-light"
           type="button"
           @click="openModal"
-          >Add Event</button>
-        </div>
-       <Modal id="newTowerEventModal">
-         <template #title>
-           <h3>Add Event</h3>
-         </template>
-         <template #body>
-           <TowerEventForm />
-         </template>
-       </Modal>
-      
+        >
+          Add Event
+        </button>
+      </div>
+      <Modal id="newTowerEventModal">
+        <template #title>
+          <h3>Add Event</h3>
+        </template>
+        <template #body>
+          <TowerEventForm />
+        </template>
+      </Modal>
+
       <!-- LOGIN COMPONENT HERE -->
       <Login />
     </div>
@@ -55,20 +47,20 @@
 import { Modal } from "bootstrap";
 import { computed } from '@vue/reactivity';
 import { AppState } from '../AppState.js';
-import TowerEventForm from "./TowerEventForm.vue";
+
 export default {
-    setup() {
-        return {
-          towerEvents: computed(() => AppState.towerEvents),
-          openModal() {
-            document.getElementById("towerEventForm").reset();
-            Modal.getOrCreateInstance(
-              document.getElementById("newTowerEventModal")
-            ).toggle();
-          },
-        };
-    },
-    // components: { Modal, TowerEventForm, TowerEventForm }
+  setup() {
+    return {
+      towerEvents: computed(() => AppState.towerEvents),
+      openModal() {
+        document.getElementById("towerEventForm").reset();
+        Modal.getOrCreateInstance(
+          document.getElementById("newTowerEventModal")
+        ).toggle();
+      },
+    };
+  },
+
 };
 </script>
 

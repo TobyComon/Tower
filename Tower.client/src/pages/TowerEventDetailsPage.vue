@@ -18,8 +18,7 @@
           <h4>{{ towerEvent.location }}</h4>
           <h5>{{ new Date(towerEvent.startDate).toDateString() }}</h5>
           <h5>{{ towerEvent.capacity }} Spots left</h5>
-          
-          <!-- TODO also need to check to c -->
+
           <button
             v-if="towerEvent.capacity > 0 && !hasTicket"
             class="btn btn-success"
@@ -29,15 +28,13 @@
           </button>
         </div>
       </div>
-    
-        <div class="row">
 
-          <Ticket v-for="t in tickets" :key="t.id" :ticket="t" />
-        </div>
-      
+      <div class="row">
+        <Ticket v-for="t in tickets" :key="t.id" :ticket="t" />
+      </div>
+
       <div>
         <Comment v-for="c in comments" :key="c.id" :comment="c" />
-        
       </div>
       <CommentForm />
     </div>
@@ -101,7 +98,6 @@ export default {
       account: computed(() => AppState.account),
       async createTicket() {
         try {
-          // ticket.value.towerEventId = route.params.id;
           await ticketsService.createTicket({ eventId: route.params.id });
           Pop.toast("Ticket Created!", "success");
         }

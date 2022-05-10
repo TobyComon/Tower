@@ -107,27 +107,28 @@ import { towerEventsService } from '../services/TowerEventsService.js';
 import { Modal } from 'bootstrap';
 export default {
   setup() {
-      const editable = ref({});
-      const router = useRouter()
+    const editable = ref({});
+    const router = useRouter()
     return {
-        editable,
-        async create() {
-          try {
-            const newTowerEvent = await towerEventsService.createTowerEvent(editable.value)
-              
-              // REVIEW I'm not passing the eventId correctly
-              document.getElementById("towerEventForm").reset();
-              Modal.getOrCreateInstance(
-                  document.getElementById("newTowerEventModal")
-              ).toggle();
-              router.push({
-                name: "TowerEventDetailsPage",
-                  params: {id: newTowerEvent.id}})
-            } catch (error) {
-              logger.error(error)
-              Pop.toast(error.message, 'error')
-            }
+      editable,
+      async create() {
+        try {
+          const newTowerEvent = await towerEventsService.createTowerEvent(editable.value)
+
+          // REVIEW I'm not passing the eventId correctly
+          document.getElementById("towerEventForm").reset();
+          Modal.getOrCreateInstance(
+            document.getElementById("newTowerEventModal")
+          ).toggle();
+          router.push({
+            name: "TowerEventDetailsPage",
+            params: { id: newTowerEvent.id }
+          })
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
         }
+      }
     }
   }
 }

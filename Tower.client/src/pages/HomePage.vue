@@ -1,23 +1,11 @@
 <template>
   <div class="container-fluid">
     <nav class="navbar bg-dark justify-content-evenly">
-      <!-- <div class="col-md-2"> -->
-        <button class="btn " @click="filterBy = ''">
-        All
-        </button>
-        <button class="btn " @click="filterBy = 'concert'">
-        Concerts
-        </button>
-        <button class="btn " @click="filterBy = 'sport'">
-        Sports
-        </button>
-        <button class="btn " @click="filterBy = 'convention'">
-        Conventions
-        </button>
-        <button class="btn " @click="filterBy = 'digital'">
-        Digital
-        </button>
-      <!-- </div> -->
+      <button class="btn" @click="filterBy = ''">All</button>
+      <button class="btn" @click="filterBy = 'concert'">Concerts</button>
+      <button class="btn" @click="filterBy = 'sport'">Sports</button>
+      <button class="btn" @click="filterBy = 'convention'">Conventions</button>
+      <button class="btn" @click="filterBy = 'digital'">Digital</button>
     </nav>
     <div class="row">
       <div class="col-12">
@@ -27,7 +15,6 @@
       </div>
     </div>
   </div>
-  
 </template>
 
 <script>
@@ -38,45 +25,45 @@ import { logger } from '../utils/Logger.js'
 import { towerEventsService } from '../services/TowerEventsService.js'
 import TowerEvent from '../components/TowerEvent.vue'
 export default {
-    name: "Home",
-    setup() {
-        const filterBy = ref("");
-        const filteredList = ref([]);
-        watchEffect(() => {
-            let list = AppState.towerEvents;
-            if (filterBy.value) {
-                list = list.filter(l => l.type == filterBy.value);
-            }
-            filteredList.value = list;
-        });
-        watchEffect(async () => {
-            try {
-                await towerEventsService.getTowerEvents();
-            }
-            catch (error) {
-                logger.error(error);
-                Pop.toast(error.message, "error");
-            }
-        });
-        return {
-            filterBy,
-            filteredList
-        };
-    },
-    components: { TowerEvent }
+  name: "Home",
+  setup() {
+    const filterBy = ref("");
+    const filteredList = ref([]);
+    watchEffect(() => {
+      let list = AppState.towerEvents;
+      if (filterBy.value) {
+        list = list.filter(l => l.type == filterBy.value);
+      }
+      filteredList.value = list;
+    });
+    watchEffect(async () => {
+      try {
+        await towerEventsService.getTowerEvents();
+      }
+      catch (error) {
+        logger.error(error);
+        Pop.toast(error.message, "error");
+      }
+    });
+    return {
+      filterBy,
+      filteredList
+    };
+  },
+  components: { TowerEvent }
 }
 </script>
 
 <style scoped lang="scss">
-.home{
+.home {
   display: grid;
   height: 80vh;
   place-content: center;
   text-align: center;
   user-select: none;
-  .home-card{
+  .home-card {
     width: 50vw;
-    > img{
+    > img {
       height: 200px;
       max-width: 200px;
       width: 100%;
@@ -85,12 +72,11 @@ export default {
     }
   }
 }
-.btn{
+.btn {
   color: var(--bs-light);
-  transition: color .6s;
+  transition: color 0.6s;
 }
-.btn:hover{
+.btn:hover {
   color: rgba(26, 26, 193, 0.802);
 }
-
 </style>
