@@ -12,7 +12,7 @@ class CommentsService {
     async createComment(eventId){
         const res = await api.post('api/comments/' , eventId)
         logger.log('createCommentsError', res.data)
-        AppState.comments.push(res.data)
+        AppState.comments.unshift(res.data)
     }
     async removeComment(commentId){
         await api.delete(`api/comments/${commentId}`)

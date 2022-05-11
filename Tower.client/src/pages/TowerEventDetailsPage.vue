@@ -6,11 +6,14 @@
           <div class="bg-dark shadow rounded p-2">
             <h1>{{ towerEvent.name }}</h1>
             <i
-              v-if="towerEvent.creatorId == account.id"
+              v-if="
+                towerEvent.creatorId == account.id && !towerEvent.isCanceled
+              "
               class="mdi mdi-trash-can-outline selectable"
               @click="cancelTowerEvent"
             ></i>
-            <p>{{ towerEvent.description }}</p>
+            <p v-if="!towerEvent.isCanceled">{{ towerEvent.description }}</p>
+            <p v-else class="text-danger">Event Has Been Cancelled :(</p>
           </div>
         </div>
         <div class="col-md-6 text-light">
@@ -20,7 +23,9 @@
           <h5>{{ towerEvent.capacity }} Spots left</h5>
 
           <button
-            v-if="towerEvent.capacity > 0 && !hasTicket"
+            v-if="
+              towerEvent.capacity > 0 && !hasTicket && !towerEvent.isCanceled
+            "
             class="btn btn-success"
             @click="createTicket"
           >

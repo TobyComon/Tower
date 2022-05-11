@@ -4,7 +4,7 @@ import { BadRequest, Forbidden } from "../utils/Errors.js";
 class TowerEventsService {
     async getAll(query={}) {
         return await dbContext.TowerEvents.find(query).populate('creator', 'name picture')
-        //NOTE do I need this here?
+        
     }
     async getById(id) {
         const towerEvent = await dbContext.TowerEvents.findById(id).populate('creator', 'name picture')
